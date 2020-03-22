@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        TAG = "3.0.${BUILD_NUMBER}"
+        TAG = "v3.0.${BUILD_NUMBER}"
     }
     stages {
         stage("Build") {
@@ -23,7 +23,9 @@ pipeline {
                 ZIP_BALL = sh(script: 'ls | grep .zip | tail -1', , returnStdout: true).trim()
             }
             steps {
-                sh "aws --version"
+                withAWS(region:'eu-west-2',credentials:'restless-test-deployflow') {
+                    sh "aws elasticbeanstalk create-application-version --application-name restless-test --version-label ${TAG} --source-bundle S3Bucket=restless-beanstalk-test,S3Key=${ZIP_BALL}"
+                }
             }
         }
 
