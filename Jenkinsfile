@@ -1,9 +1,12 @@
 pipeline {
     agent any
+    environment {
+        TAG = "3.0.${BUILD_NUMBER}"
+    }
     stages {
         stage("Build") {
             steps {
-                sh "php build.php 3.0.${BUILD_NUMBER} ${GIT_BRANCH}"
+                sh "php build.php ${TAG} ${GIT_BRANCH}"
             }
         }
         stage("Ship") {
