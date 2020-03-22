@@ -7,10 +7,10 @@ pipeline {
             }
         }
         stage("Ship") {
+            environment {
+                ZIP_BALL = sh(script: 'ls | grep .zip | tail -1', , returnStdout: true).trim()
+            }
             steps {
-                environment {
-                    ZIP_BALL = sh(script: 'ls | grep .zip | tail -1', , returnStdout: true).trim()
-                }
                 sh "echo ${ZIP_BALL}"
                 withAWS(region:'eu-west-2',credentials:'restless-test-deployflow') {
                     s3Upload(bucket:"restless-beanstalk-test", workingDir:'./', includePathPattern:'**/*.zip');
