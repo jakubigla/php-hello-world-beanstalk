@@ -4,12 +4,13 @@ pipeline {
         stage("Build") {
             steps {
                 sh "php build.php 3.0.${BUILD_NUMBER} ${GIT_BRANCH}"
-
             }
         }
         stage("Ship") {
             steps {
-                sh "export ZIP_BALL=`ls | grep .zip | tail -1`"
+                environment {
+                    ZIP_BALL = sh(script: 'ls | grep .zip | tail -1', , returnStdout: true).trim()
+                }
                 sh "echo ${ZIP_BALL}"
                 withAWS(region:'eu-west-2',credentials:'restless-test-deployflow') {
                     s3Upload(bucket:"restless-beanstalk-test", workingDir:'./', includePathPattern:'**/*.zip');
