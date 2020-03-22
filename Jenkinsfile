@@ -29,10 +29,11 @@ pipeline {
             }
             steps {
                 withAWS(region: env.AWS_REGION ,credentials:'restless-test-deployflow') {
-                    sh "aws elasticbeanstalk create-application-version
-                        --application-name restless-test
-                        --version-label ${TAG}
-                        --source-bundle S3Bucket=${ARTIFACTS_BUCKET},S3Key=${ZIP_BALL}"
+                    sh ''' aws elasticbeanstalk create-application-version
+                            --application-name restless-test
+                            --version-label ${TAG}
+                            --source-bundle S3Bucket=${ARTIFACTS_BUCKET},S3Key=${ZIP_BALL}
+                    '''
                 }
             }
         }
