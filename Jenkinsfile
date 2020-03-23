@@ -12,7 +12,11 @@ pipeline {
             steps {
                 sh "php build.php ${TAG} ${GIT_BRANCH}"
             }
-            archiveArtifacts artifacts: '*.zip'
+            post {
+                always {
+                    archiveArtifacts artifacts: '*.zip'
+                }
+            }
         }
 
         stage("Deploy DEV") {
