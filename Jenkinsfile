@@ -12,16 +12,7 @@ pipeline {
             steps {
                 sh "php build.php ${TAG} ${GIT_BRANCH}"
             }
-        }
-        stage("Ship") {
-            environment {
-                ZIP_BALL = sh(script: 'ls | grep .zip | tail -1', , returnStdout: true).trim()
-            }
-            steps {
-                withAWS(region: env.AWS_REGION,credentials: 'restless-test-deployflow') {
-                    s3Upload(bucket: env.ARTIFACTS_BUCKET , file: env.ZIP_BALL );
-                }
-            }
+            archiveArtifacts artifacts: '*.zip'
         }
 
         stage("Deploy DEV") {
