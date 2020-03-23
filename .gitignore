@@ -1,1 +1,4 @@
 *.zip
+terraform/.terraform
+terraform/terraform.tfstate*
+terraform/tf.plan

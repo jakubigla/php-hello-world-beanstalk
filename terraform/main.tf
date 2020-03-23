@@ -12,3 +12,15 @@ module "dev" {
 
   environment_prefix = "dev-"
 }
+
+module "prod" {
+  source = "./app"
+
+  environment_prefix = "prod-"
+}
+
+module "uat" {
+  source = "./app"
+
+  environment_prefix = "uat-"
+}

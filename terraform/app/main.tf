@@ -13,7 +13,7 @@ resource "aws_elastic_beanstalk_application" "current" {
 }
 
 resource "aws_elastic_beanstalk_environment" "blue" {
-  name                = "blue"
+  name                = "${var.environment_prefix}blue"
   application         = aws_elastic_beanstalk_application.current.name
   solution_stack_name = local.solution_stack_name
 
@@ -28,10 +28,14 @@ resource "aws_elastic_beanstalk_environment" "blue" {
   tags = {
     CurrentColor = "blue"
   }
+
+  lifecycle {
+    ignore_changes = [tags,name]
+  }
 }
 
 resource "aws_elastic_beanstalk_environment" "green" {
-  name                = "green"
+  name                = "${var.environment_prefix}green"
   application         = aws_elastic_beanstalk_application.current.name
   solution_stack_name = local.solution_stack_name
 
@@ -45,5 +49,9 @@ resource "aws_elastic_beanstalk_environment" "green" {
 
   tags = {
     CurrentColor = "green"
+  }
+
+  lifecycle {
+    ignore_changes = [tags,name]
   }
 }
