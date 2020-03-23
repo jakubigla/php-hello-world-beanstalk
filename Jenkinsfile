@@ -28,7 +28,7 @@ pipeline {
         stage("Deploy DEV") {
             when { not { branch 'master' } }
             environment {
-                ZIP_BALL = sh(script: 'ls | grep .zip | tail -1', , returnStdout: true).trim()
+                ZIP_BALL = sh(script: 'ls | grep "$TAG" | tail -1', , returnStdout: true).trim()
             }
             steps {
                 withAWS(region: env.AWS_REGION ,credentials:'restless-test-deployflow') {
